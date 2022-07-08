@@ -1,0 +1,7 @@
+[requires]
+drogon/1.7.5
+
+[generators]
+cmake_find_package
+
+[options]
