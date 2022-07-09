@@ -13,10 +13,10 @@ namespace Hawk
 
     bool UsersManager::RegisterUser(Json::Value jsonReq)
     {
-        User user{};
-        user.name = std::string(jsonReq["name"].asString());
+        auto pUser = std::make_shared<User>();
+        pUser->name = std::string(jsonReq["name"].asString());
 
-        auto result = Register(user);
+        auto result = Register(pUser);
         if(!result) {
             return false;
         }
@@ -24,15 +24,25 @@ namespace Hawk
         return true;
     }
 
-    bool UsersManager::Register(const User& user)
+    bool UsersManager::Register(std::shared_ptr<User> pUser)
     {
-        auto it = m_users.find(user.name);
+        auto it = m_users.find(pUser->name);
         if(it != std::end(m_users))
         {
             return false;
         }
 
-        return m_users.emplace(user.name, user).second;
+        return m_users.emplace(pUser->name, pUser).second;
+    }
+
+    std::shared_ptr<User> UsersManager::GetUser(const std::string& name)
+    {
+        auto it = m_users.find(name);
+        if(it != std::end(m_users))
+        {
+            return it->second;
+        }
+        return nullptr;
     }
 
 }

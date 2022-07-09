@@ -34,8 +34,6 @@ namespace Hawk
             return;
         }
 
-        //m_users.publish()
-
         Json::Value responseBody{};
         responseBody["error"] = false;
         auto response = drogon::HttpResponse::newHttpJsonResponse(responseBody);

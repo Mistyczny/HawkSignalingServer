@@ -10,9 +10,12 @@ find_package(jsoncpp REQUIRED)
 
 aux_source_directory(${CMAKE_SOURCE_DIR}/src SOURCES)
 aux_source_directory(${CMAKE_SOURCE_DIR}/src/Controllers CONTROLLERS_SOURCES)
+aux_source_directory(${CMAKE_SOURCE_DIR}/src/Controllers/UsersControllerHandlers USERS_CONTROLLERS_HANDLERS_SOURCES)
+
 add_executable(HawkSignalingServer
     ${SOURCES}
     ${CONTROLLERS_SOURCES}
+    ${USERS_CONTROLLERS_HANDLERS_SOURCES}
 )
 target_link_libraries(HawkSignalingServer
         PRIVATE

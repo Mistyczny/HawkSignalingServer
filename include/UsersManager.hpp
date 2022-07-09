@@ -21,9 +21,10 @@ namespace Hawk
 
         bool RegisterUser(Json::Value jsonReq);
 
+        std::shared_ptr<User> GetUser(const std::string& name);
     private:
-        bool Register(const User& user);
+        bool Register(std::shared_ptr<User> pUser);
 
-        std::map<std::string, User> m_users;
+        std::map<std::string, std::shared_ptr<User>> m_users;
     };
 }
