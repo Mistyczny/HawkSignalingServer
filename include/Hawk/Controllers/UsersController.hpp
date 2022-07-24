@@ -2,8 +2,8 @@
 // Created by admin on 7/5/2022.
 //
 #pragma once
-#include "Hawk/Controllers/UsersControllerHandlers/IUsersControllerHandlersFactory.hpp"
-#include "Hawk/UsersManager.hpp"
+#include <Hawk/Controllers/UsersControllerHandlers/IUsersControllerHandlersFactory.hpp>
+#include <Hawk/UsersManager.hpp>
 #include <drogon/HttpController.h>
 #include <drogon/PubSubService.h>
 #include <drogon/WebSocketController.h>
@@ -24,6 +24,7 @@ namespace Hawk
          * @return
          */
         static UsersControllerPtr Create(UsersManagerPtr pUsersManager,
+                                         IUsersPubSubServicePtr pUsersPubSubService,
                                          IUsersControllerHandlersFactoryPtr pUsersControllersHandlersFactory);
 
         /**
@@ -31,7 +32,9 @@ namespace Hawk
          *
          * @param pUserManager
          */
-        explicit UsersController(UsersManagerPtr pUsersManager, IUsersControllerHandlersFactoryPtr pUsersControllersHandlersFactory);
+        explicit UsersController(UsersManagerPtr pUsersManager,
+                                 IUsersPubSubServicePtr pUsersPubSubService,
+                                 IUsersControllerHandlersFactoryPtr pUsersControllersHandlersFactory);
 
         /**
          * @brief Destroy the Users Controller object
@@ -74,6 +77,7 @@ namespace Hawk
 
     private:
         UsersManagerPtr m_pUsersManager;
+        IUsersPubSubServicePtr m_pUsersPubSubService;
         IUsersControllerHandlersFactoryPtr m_pUsersControllersHandlersFactory;
     };
 }

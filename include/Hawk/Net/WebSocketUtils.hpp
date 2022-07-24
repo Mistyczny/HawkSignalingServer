@@ -9,4 +9,6 @@ namespace Hawk::Net
 {
     CloseCode TranslateCloseCode(drogon::CloseCode closeCode);
     drogon::CloseCode TranslateCloseCode(CloseCode closeCode);
+
+
 }

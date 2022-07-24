@@ -9,13 +9,18 @@
 namespace Hawk
 {
     UsersControllerPtr UsersController::Create(UsersManagerPtr pUsersManager,
+                                               IUsersPubSubServicePtr pUsersPubSubService,
                                                IUsersControllerHandlersFactoryPtr pUsersControllersHandlersFactory)
     {
-        return std::make_shared<UsersController>(std::move(pUsersManager), std::move(pUsersControllersHandlersFactory));
+        return std::make_shared<UsersController>(
+            std::move(pUsersManager), std::move(pUsersPubSubService), std::move(pUsersControllersHandlersFactory));
     }
 
-    UsersController::UsersController(UsersManagerPtr pUsersManager, IUsersControllerHandlersFactoryPtr pUsersControllersHandlersFactory)
+    UsersController::UsersController(UsersManagerPtr pUsersManager,
+                                     IUsersPubSubServicePtr pUsersPubSubService,
+                                     IUsersControllerHandlersFactoryPtr pUsersControllersHandlersFactory)
         : m_pUsersManager(std::move(pUsersManager))
+        , m_pUsersPubSubService(std::move(pUsersPubSubService))
         , m_pUsersControllersHandlersFactory(std::move(pUsersControllersHandlersFactory))
     {
         std::cout << "UsersController::UsersController" << std::endl;
@@ -29,19 +34,34 @@ namespace Hawk
     void UsersController::handleNewConnection(const drogon::HttpRequestPtr& pHttpRequest, const drogon::WebSocketConnectionPtr& pConnection)
     {
         std::cout << "UsersController::handleNewConnection" << std::endl;
+        auto pWebSocketConnection = Hawk::Net::WebSocketConnection::Create(pConnection);
 
-        IUsersControllerHandler::Context context{};
-        context.userName = pHttpRequest->getParameter("name");
+        auto userName = pHttpRequest->getParameter("name");
 
-        auto pWebSocketConnection = Net::WebSocketConnection::Create(pConnection);
-        if (!pWebSocketConnection)
+        auto pUser = m_pUsersManager->GetUser(userName);
+        if (!pUser)
         {
-            pWebSocketConnection->Shutdown(Net::CloseCode::kAbnormally, "Server Internal Error");
+            pWebSocketConnection->Shutdown(Net::CloseCode::kAbnormally, "User not signed in");
             return;
         }
 
-        auto pNewConnectionHandler = m_pUsersControllersHandlersFactory->CreateNewConnectionHandler(pWebSocketConnection);
-        pNewConnectionHandler->HandleMessage(context);
+        if (auto result = pWebSocketConnection->SetContext(pUser); !result)
+        {
+            pWebSocketConnection->Shutdown(Net::CloseCode::kAbnormally, "Internal server error");
+            return;
+        }
+
+        auto subscribeCallback = [&](const std::string& topic, const std::string& message) {
+            (void)topic;
+            std::cout << "Sending message to pConnection" << message << std::endl;
+            pWebSocketConnection->Send(message);
+        };
+
+        if (auto result = m_pUsersPubSubService->Subscribe("friends", subscribeCallback); !result)
+        {
+            pWebSocketConnection->Shutdown(Net::CloseCode::kAbnormally, "Failed to subscribe");
+            return;
+        }
     }
 
     void UsersController::handleNewMessage(const drogon::WebSocketConnectionPtr& pConnection,

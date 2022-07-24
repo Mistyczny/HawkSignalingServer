@@ -13,12 +13,12 @@
 namespace Hawk
 {
     UsersControllerHandlersFactoryPtr UsersControllerHandlersFactory::Create(UsersManagerPtr pUsersManager,
-                                                                             UsersPubSubServicePtr pUsersPubSubService)
+                                                                             IUsersPubSubServicePtr pUsersPubSubService)
     {
         return std::make_unique<UsersControllerHandlersFactory>(std::move(pUsersManager), std::move(pUsersPubSubService));
     }
 
-    UsersControllerHandlersFactory::UsersControllerHandlersFactory(UsersManagerPtr pUsersManager, UsersPubSubServicePtr pUsersPubSubService)
+    UsersControllerHandlersFactory::UsersControllerHandlersFactory(UsersManagerPtr pUsersManager, IUsersPubSubServicePtr pUsersPubSubService)
         : m_pUsersManager{std::move(pUsersManager)}
         , m_pUsersPubSubService{std::move(pUsersPubSubService)}
     {}
@@ -60,11 +60,5 @@ namespace Hawk
         }
 
         return m_handlersMap.emplace(messageType, newHandler).first->second;
-    }
-
-    IUsersControllerHandlerPtr
-    UsersControllerHandlersFactory::CreateNewConnectionHandler(Net::IWebSocketConnectionPtr pWebSocketConnection)
-    {
-        return UsersControllerNewConnectionHandler::Create(m_pUsersManager, m_pUsersPubSubService, pWebSocketConnection);
     }
 }

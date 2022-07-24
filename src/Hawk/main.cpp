@@ -12,7 +12,7 @@ int main()
     auto pUserController = Hawk::UserController::Create(pUsersManager);
     auto pUsersPubSubService = Hawk::UsersPubSubService::Create();
     auto pUsersControllerHandlersFactory = Hawk::UsersControllerHandlersFactory::Create(pUsersManager, pUsersPubSubService);
-    auto pUsersController = Hawk::UsersController::Create(pUsersManager, std::move(pUsersControllerHandlersFactory));
+    auto pUsersController = Hawk::UsersController::Create(pUsersManager, pUsersPubSubService, std::move(pUsersControllerHandlersFactory));
     auto pSignalingController = Hawk::SignalingController::Create(pUsersManager);
 
     drogon::app()

@@ -4,8 +4,7 @@
 #pragma once
 #include "Hawk/UsersManager.hpp"
 #include "IUsersControllerHandlersFactory.hpp"
-#include <Hawk/UsersPubSubService.hpp>
-
+#include <Hawk/IUsersPubSubService.hpp>
 #include <map>
 
 namespace Hawk
@@ -16,9 +15,9 @@ namespace Hawk
     class UsersControllerHandlersFactory : public IUsersControllerHandlersFactory
     {
     public:
-        static UsersControllerHandlersFactoryPtr Create(UsersManagerPtr pUsersManager, UsersPubSubServicePtr pUsersPubSubService);
+        static UsersControllerHandlersFactoryPtr Create(UsersManagerPtr pUsersManager, IUsersPubSubServicePtr pUsersPubSubService);
 
-        UsersControllerHandlersFactory(UsersManagerPtr pUsersManager, UsersPubSubServicePtr pUsersPubSubService);
+        UsersControllerHandlersFactory(UsersManagerPtr pUsersManager, IUsersPubSubServicePtr pUsersPubSubService);
 
         /**
          *
@@ -26,13 +25,6 @@ namespace Hawk
          * @return
          */
         IUsersControllerHandlerPtr GetOrCreateMessageHandler(drogon::WebSocketMessageType messageType) override;
-
-        /**
-         *
-         * @param pWebSocketConnection
-         * @return
-         */
-        IUsersControllerHandlerPtr CreateNewConnectionHandler(Net::IWebSocketConnectionPtr pWebSocketConnection) override;
 
     private:
         /**
@@ -44,6 +36,6 @@ namespace Hawk
 
         std::map<drogon::WebSocketMessageType, IUsersControllerHandlerPtr> m_handlersMap;
         UsersManagerPtr m_pUsersManager;
-        UsersPubSubServicePtr m_pUsersPubSubService;
+        IUsersPubSubServicePtr m_pUsersPubSubService;
     };
 }
