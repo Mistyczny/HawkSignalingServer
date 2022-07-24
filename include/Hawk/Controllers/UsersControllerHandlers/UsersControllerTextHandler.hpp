@@ -3,6 +3,7 @@
 //
 #pragma once
 #include "IUsersControllerHandler.hpp"
+#include <Hawk/IUsersPubSubService.hpp>
 #include <memory>
 
 namespace Hawk
@@ -13,13 +14,14 @@ namespace Hawk
     class UsersControllerTextHandler : public IUsersControllerHandler
     {
     public:
-        static UsersControllerTextHandlerPtr Create();
+        static UsersControllerTextHandlerPtr Create(IUsersPubSubServicePtr pUsersPubSubService);
 
-        UsersControllerTextHandler();
+        UsersControllerTextHandler(IUsersPubSubServicePtr pUsersPubSubService);
         ~UsersControllerTextHandler() override;
 
         void HandleMessage(const Context& context) override;
-    private:
 
+    private:
+        IUsersPubSubServicePtr m_pUsersPubSubService;
     };
 }

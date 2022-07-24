@@ -7,12 +7,13 @@
 
 namespace Hawk
 {
-    UsersControllerTextHandlerPtr UsersControllerTextHandler::Create()
+    UsersControllerTextHandlerPtr UsersControllerTextHandler::Create(IUsersPubSubServicePtr pUsersPubSubService)
     {
-        return std::make_shared<UsersControllerTextHandler>();
+        return std::make_shared<UsersControllerTextHandler>(std::move(pUsersPubSubService));
     }
 
-    UsersControllerTextHandler::UsersControllerTextHandler()
+    UsersControllerTextHandler::UsersControllerTextHandler(IUsersPubSubServicePtr pUsersPubSubService)
+        : m_pUsersPubSubService{std::move(pUsersPubSubService)}
     {
         std::cout << "UsersControllerTextHandler::UsersControllerTextHandler" << std::endl;
     }

@@ -21,19 +21,28 @@ namespace Hawk
         UsersControllerHandlersFactory(UsersManagerPtr pUsersManager, UsersPubSubServicePtr pUsersPubSubService);
 
         /**
-         *
-         * @param messageType
-         * @return
+         * @brief Get or Create Message Handler object
+         * 
+         * @param messageType 
+         * @return IUsersControllerHandlerPtr 
          */
         IUsersControllerHandlerPtr GetOrCreateMessageHandler(drogon::WebSocketMessageType messageType) override;
 
         /**
-         *
-         * @param pWebSocketConnection
-         * @return
+         * @brief Create a New Connection Handler object
+         * 
+         * @param pWebSocketConnection 
+         * @return IUsersControllerHandlerPtr 
          */
-        IUsersControllerHandlerPtr CreateNewConnectionHandler(Net::IWebSocketConnectionPtr pWebSocketConnection) override;
+        IUsersConnectionEventHandlerPtr CreateNewConnectionHandler(Net::IWebSocketConnectionPtr pWebSocketConnection) override;
 
+        /**
+         * @brief Create a Connection Closed Handler object
+         * 
+         * @param pWebSocketConnection 
+         * @return IUsersControllerHandlerPtr 
+         */
+        IUsersConnectionEventHandlerPtr CreateConnectionClosedHandler(Net::IWebSocketConnectionPtr pWebSocketConnection) override;
     private:
         /**
          *

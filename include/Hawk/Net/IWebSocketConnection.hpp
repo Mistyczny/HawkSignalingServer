@@ -41,6 +41,26 @@ namespace Hawk::Net
          */
         virtual bool SetContext(std::shared_ptr<void> pContext) = 0;
 
+        /**
+         * @brief Check if has context assigned
+         * 
+         * @return Success, if has context. False otherwise
+         */
+        virtual bool HasContext() = 0;
+
+        /**
+         * @brief Get the Context object
+         * 
+         * @return void* 
+         */
+        virtual std::shared_ptr<void*> GetContext() = 0;
+
+        /**
+         * @brief 
+         * 
+         * @param closeCode 
+         * @param message 
+         */
         virtual void Shutdown(CloseCode closeCode, std::string message) = 0;
     };
 

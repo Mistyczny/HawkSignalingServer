@@ -5,6 +5,7 @@
 #include <cstdint>
 #include <string>
 #include <functional>
+#include <memory>
 
 namespace Hawk
 {
@@ -38,4 +39,6 @@ namespace Hawk
          */
         virtual void Publish(std::string topic, std::string message) = 0;
     };
+
+    using IUsersPubSubServicePtr = std::shared_ptr<IUsersPubSubService>;
 }

@@ -4,6 +4,9 @@
 
 #include <Hawk/Controllers/UsersController.hpp>
 #include <Hawk/Net/WebSocketConnection.hpp>
+
+#include <nlohmann/json.hpp>
+
 #include <utility>
 
 namespace Hawk
@@ -41,7 +44,7 @@ namespace Hawk
         }
 
         auto pNewConnectionHandler = m_pUsersControllersHandlersFactory->CreateNewConnectionHandler(pWebSocketConnection);
-        pNewConnectionHandler->HandleMessage(context);
+        //pNewConnectionHandler->HandleMessage(context);
     }
 
     void UsersController::handleNewMessage(const drogon::WebSocketConnectionPtr& pConnection,
@@ -55,23 +58,40 @@ namespace Hawk
             std::cout << "Failed to create required handler" << std::endl;
         }
 
-        IUsersControllerHandler::Context context{};
-        context.message = message;
-        pMessageHandler->HandleMessage(context);
+        try
+        {
+            nlohmann::json jsonDocument{};
+            jsonDocument.parse(message);
 
-        // auto& s = pConnection->getContextRef<User>();
-        // m_usersPubSubService.publish("friends", message);
+            IUsersControllerHandler::Context context{};
+            context.userName = jsonDocument["UserName"];
+
+            pMessageHandler->HandleMessage(context);
+        }
+        catch (nlohmann::json::parse_error& parseError)
+        {
+            std::cout << "Failed to parse json: " << parseError.what() << std::endl;
+        }
+        catch (std::exception& ex)
+        {
+            std::cout << "Other error: " << ex.what() << std::endl;
+        }
     }
 
     void UsersController::handleConnectionClosed(const drogon::WebSocketConnectionPtr& pConnection)
     {
         std::cout << "UsersController::handleConnectionClosed" << std::endl;
-        if (!pConnection->hasContext())
+        auto pWebSocketConnection = Net::WebSocketConnection::Create(pConnection);
+        if (!pWebSocketConnection)
         {
+            pWebSocketConnection->Shutdown(Net::CloseCode::kAbnormally, "Server Internal Error");
             return;
         }
 
-        auto& s = pConnection->getContextRef<User>();
+        auto pConnectionClosedHandler = m_pUsersControllersHandlersFactory->CreateConnectionClosedHandler(pWebSocketConnection);
+        //pConnectionClosedHandler->
+
+        //auto& s = pConnection->getContextRef<User>();
         // m_usersPubSubService.unsubscribe("friends", s.subscriberId);
     }
 }

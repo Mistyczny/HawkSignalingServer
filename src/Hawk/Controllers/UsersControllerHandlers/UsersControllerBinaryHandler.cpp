@@ -11,6 +11,7 @@ namespace Hawk
     {
         return std::make_shared<UsersControllerBinaryHandler>();
     }
+
     UsersControllerBinaryHandler::UsersControllerBinaryHandler()
     {
         std::cout << "UsersControllerBinaryHandler::UsersControllerBinaryHandler" << std::endl;

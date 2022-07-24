@@ -30,33 +30,32 @@ namespace Hawk
         std::cout << "UsersControllerNewConnectionHandler::~UsersControllerNewConnectionHandler" << std::endl;
     }
 
-    void UsersControllerNewConnectionHandler::HandleMessage(const IUsersControllerHandler::Context& context)
+    void UsersControllerNewConnectionHandler::Handle()
     {
-        std::cout << "UsersControllerNewConnectionHandler::HandleMessage" << std::endl;
-        auto pUser = m_pUsersManager->GetUser(context.userName);
+        // auto pUser = m_pUsersManager->GetUser(context.userName);
 
-        if (!pUser)
-        {
-            m_pWebSocketConnection->Shutdown(Net::CloseCode::kAbnormally, "User not signed in");
-            return;
-        }
+        // if (!pUser)
+        // {
+        //     m_pWebSocketConnection->Shutdown(Net::CloseCode::kAbnormally, "User not signed in");
+        //     return;
+        // }
 
-        if (auto result = m_pWebSocketConnection->SetContext(pUser); !result)
-        {
-            m_pWebSocketConnection->Shutdown(Net::CloseCode::kAbnormally, "Internal server error");
-            return;
-        }
+        // if (auto result = m_pWebSocketConnection->SetContext(pUser); !result)
+        // {
+        //     m_pWebSocketConnection->Shutdown(Net::CloseCode::kAbnormally, "Internal server error");
+        //     return;
+        // }
 
-        auto subscribeCallback = [&](const std::string& topic, const std::string& message) {
-            (void)topic;
-            std::cout << "Sending message to pConnection" << message << std::endl;
-            m_pWebSocketConnection->Send(message);
-        };
-
-        if (auto result = m_pUsersPubSubService->Subscribe("friends", subscribeCallback); !result)
-        {
-            m_pWebSocketConnection->Shutdown(Net::CloseCode::kAbnormally, "Failed to subscribe");
-            return;
-        }
+        // Net::IWebSocketConnectionPtr pWebSocketConnection = m_pWebSocketConnection;
+        // auto callback = [pWebSocketConnection](auto&& topic, auto&& message) {
+        //     if(!pWebSocketConnection) {
+        //         return;
+        //     }
+        //     pWebSocketConnection->Send(message);
+        // };
+        // if (auto result = m_pUsersPubSubService->Subscribe("friends", callback); !result)
+        // {
+        //     m_pWebSocketConnection->Shutdown(Net::CloseCode::kAbnormally, "Failed to subscribe");
+        // }
     }
 }

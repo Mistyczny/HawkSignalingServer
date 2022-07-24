@@ -26,6 +26,7 @@ namespace Hawk::Net
 
     bool WebSocketConnection::Send(std::string message)
     {
+        std::cout << "HELLO" << std::endl;
         if (message.empty())
         {
             std::cout << "Provided message is empty" << std::endl;
@@ -60,6 +61,16 @@ namespace Hawk::Net
         m_pWebSocketConnection->setContext(pContext);
 
         return true;
+    }
+
+    bool WebSocketConnection::HasContext()
+    {
+        return m_pWebSocketConnection->hasContext();
+    }
+
+    std::shared_ptr<void*> WebSocketConnection::GetContext()
+    {
+        return m_pWebSocketConnection->getContext<void*>();
     }
 
     void WebSocketConnection::Shutdown(CloseCode closeCode, std::string message)

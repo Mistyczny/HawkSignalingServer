@@ -1,5 +1,6 @@
 cmake_minimum_required(VERSION 3.22)
 project(HawkSignalingServer VERSION 0.0.1 LANGUAGES CXX)
+list(APPEND CMAKE_MODULE_PATH ${CMAKE_BINARY_DIR})
 
 set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
@@ -7,6 +8,8 @@ set(CMAKE_CXX_EXTENSIONS OFF)
 
 find_package(Drogon REQUIRED)
 find_package(jsoncpp REQUIRED)
+find_package(GTest)
+find_package(nlohmann_json REQUIRED)
 
 aux_source_directory(${CMAKE_SOURCE_DIR}/src/Hawk SOURCES)
 aux_source_directory(${CMAKE_SOURCE_DIR}/src/Hawk/Controllers CONTROLLERS_SOURCES)
@@ -21,6 +24,7 @@ add_executable(HawkSignalingServer
 )
 target_link_libraries(HawkSignalingServer
         PRIVATE
+    nlohmann_json::nlohmann_json
     Drogon::Drogon
 )
 
@@ -29,3 +33,5 @@ target_include_directories(HawkSignalingServer
     ${CMAKE_SOURCE_DIR}/include
     ${CMAKE_SOURCE_DIR}/include/Hawk
 )
+
+add_subdirectory(src/Hawk)

@@ -6,6 +6,7 @@
 #include "Hawk/Controllers/UsersControllerHandlers/UsersControllerBinaryHandler.hpp"
 #include "Hawk/Controllers/UsersControllerHandlers/UsersControllerCloseHandler.hpp"
 #include "Hawk/Controllers/UsersControllerHandlers/UsersControllerNewConnectionHandler.hpp"
+#include "Hawk/Controllers/UsersControllerHandlers/UsersControllerConnectionClosedHandler.hpp"
 #include "Hawk/Controllers/UsersControllerHandlers/UsersControllerPingHandler.hpp"
 #include "Hawk/Controllers/UsersControllerHandlers/UsersControllerPongHandler.hpp"
 #include "Hawk/Controllers/UsersControllerHandlers/UsersControllerTextHandler.hpp"
@@ -40,7 +41,7 @@ namespace Hawk
         switch (messageType)
         {
             case drogon::WebSocketMessageType::Text:
-                newHandler = UsersControllerTextHandler::Create();
+                newHandler = UsersControllerTextHandler::Create(m_pUsersPubSubService);
                 break;
             case drogon::WebSocketMessageType::Binary:
                 newHandler = UsersControllerBinaryHandler::Create();
@@ -62,9 +63,14 @@ namespace Hawk
         return m_handlersMap.emplace(messageType, newHandler).first->second;
     }
 
-    IUsersControllerHandlerPtr
-    UsersControllerHandlersFactory::CreateNewConnectionHandler(Net::IWebSocketConnectionPtr pWebSocketConnection)
+    IUsersConnectionEventHandlerPtr UsersControllerHandlersFactory::CreateNewConnectionHandler(Net::IWebSocketConnectionPtr pWebSocketConnection)
     {
         return UsersControllerNewConnectionHandler::Create(m_pUsersManager, m_pUsersPubSubService, pWebSocketConnection);
+    }
+
+    IUsersConnectionEventHandlerPtr
+    UsersControllerHandlersFactory::CreateConnectionClosedHandler(Net::IWebSocketConnectionPtr pWebSocketConnection)
+    {
+        return UsersControllerConnectionClosedHandler::Create(pWebSocketConnection);
     }
 }

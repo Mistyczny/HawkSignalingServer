@@ -2,7 +2,8 @@
 // Created by admin on 7/8/2022.
 //
 #pragma once
-#include "IUsersControllerHandler.hpp"
+#include <Hawk/Controllers/UsersControllerHandlers/IUsersControllerHandler.hpp>
+#include <Hawk/Controllers/UsersControllerHandlers/IUsersConnectionEventHandler.hpp>
 #include <Hawk/IUsersPubSubService.hpp>
 #include <Hawk/Net/IWebSocketConnection.hpp>
 #include <drogon/HttpTypes.h>
@@ -26,7 +27,9 @@ namespace Hawk
          * @param pWebSocketConnection
          * @return
          */
-        virtual IUsersControllerHandlerPtr CreateNewConnectionHandler(Net::IWebSocketConnectionPtr pWebSocketConnection) = 0;
+        virtual IUsersConnectionEventHandlerPtr CreateNewConnectionHandler(Net::IWebSocketConnectionPtr pWebSocketConnection) = 0;
+
+        virtual IUsersConnectionEventHandlerPtr CreateConnectionClosedHandler(Net::IWebSocketConnectionPtr pWebSocketConnection) = 0;
     };
 
     using IUsersControllerHandlersFactoryPtr = std::unique_ptr<IUsersControllerHandlersFactory>;

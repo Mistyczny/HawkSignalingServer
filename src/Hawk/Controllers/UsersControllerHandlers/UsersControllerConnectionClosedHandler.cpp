@@ -7,12 +7,14 @@
 
 namespace Hawk
 {
-    UsersControllerConnectionClosedHandlerPtr Hawk::UsersControllerConnectionClosedHandler::Create()
+    UsersControllerConnectionClosedHandlerPtr
+    Hawk::UsersControllerConnectionClosedHandler::Create(Net::IWebSocketConnectionPtr pWebSocketConnection)
     {
-        return std::make_shared<UsersControllerConnectionClosedHandler>();
+        return std::make_shared<UsersControllerConnectionClosedHandler>(std::move(pWebSocketConnection));
     }
 
-    UsersControllerConnectionClosedHandler::UsersControllerConnectionClosedHandler()
+    UsersControllerConnectionClosedHandler::UsersControllerConnectionClosedHandler(Net::IWebSocketConnectionPtr pWebSocketConnection)
+        : m_pWebSocketConnection(std::move(pWebSocketConnection))
     {
         std::cout << "UsersControllerConnectionClosedHandler::UsersControllerConnectionClosedHandler" << std::endl;
     }
@@ -22,8 +24,12 @@ namespace Hawk
         std::cout << "UsersControllerConnectionClosedHandler::~UsersControllerConnectionClosedHandler" << std::endl;
     }
 
-    void UsersControllerConnectionClosedHandler::HandleMessage(const IUsersControllerHandler::Context& context)
-    {
-        std::cout << "UsersControllerConnectionClosedHandler::HandleMessage" << std::endl;
-    }
+    void UsersControllerConnectionClosedHandler::Handle() {}
+
+    // void UsersControllerConnectionClosedHandler::HandleMessage(const IUsersControllerHandler::Context& context)
+    //{
+    // std::cout << "UsersControllerConnectionClosedHandler::HandleMessage" << std::endl;
+
+    // std::shared_ptr<User> pUser = std::static_pointer_cast<User>(m_pWebSocketConnection->GetContext());
+    //}
 }
