@@ -25,7 +25,12 @@ namespace Hawk
     void UsersControllerTextHandler::HandleMessage(std::string&& message)
     {
         std::cout << "UsersControllerTextHandler::HandleMessage" << std::endl;
+        Json::Value jsonDocument;
+        Json::Reader jsonReader;
 
-
+        if (bool parseResult = jsonReader.parse(message, jsonDocument); !parseResult)
+        {
+            return;
+        }
     }
 }

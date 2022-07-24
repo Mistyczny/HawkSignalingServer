@@ -2,6 +2,7 @@
 // Created by admin on 7/5/2022.
 //
 #pragma once
+#include "Hawk/PubSubServices/IUsersPubSubService.hpp"
 #include "Hawk/UsersManager.hpp"
 #include <drogon/HttpController.h>
 #include <shared_mutex>
@@ -11,8 +12,8 @@ namespace Hawk
     class UserController : public drogon::HttpController<UserController, false>
     {
     public:
-        static std::shared_ptr<UserController> Create(UsersManagerPtr pUsersManager);
-        explicit UserController(UsersManagerPtr pUsersManager);
+        static std::shared_ptr<UserController> Create(UsersManagerPtr pUsersManager, IUsersPubSubServicePtr pUsersPubSubService);
+        explicit UserController(UsersManagerPtr pUsersManager, IUsersPubSubServicePtr pUsersPubSubService);
 
         METHOD_LIST_BEGIN
         ADD_METHOD_TO(UserController::SignIn, "/HawkSignalingServer/User/SignIn", drogon::Post);
@@ -28,5 +29,6 @@ namespace Hawk
                          JSONCPP_STRING error);
 
         UsersManagerPtr m_pUsersManager;
+        IUsersPubSubServicePtr m_pUsersPubSubService;
     };
 }

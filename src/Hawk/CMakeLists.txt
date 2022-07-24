@@ -1,5 +1,6 @@
 
 add_subdirectory(Net)
+add_subdirectory(PubSubServices)
 add_subdirectory(Controllers)
 
 aux_source_directory(${CMAKE_CURRENT_SOURCE_DIR} SOURCES)
@@ -13,6 +14,7 @@ target_link_libraries(HawkSignalingServer
     Hawk::UserController
     Hawk::UsersController
     Hawk::SignalingController
+    Hawk::UsersPubSubService
 )
 target_include_directories(HawkSignalingServer
         PRIVATE

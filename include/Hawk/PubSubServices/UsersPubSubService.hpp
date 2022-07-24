@@ -2,8 +2,8 @@
 // Created by admin on 7/12/2022.
 //
 #pragma once
-#include <Hawk/IUsersPubSubService.hpp>
-#include <Hawk/User.hpp>
+#include "Hawk/User.hpp"
+#include "IUsersPubSubService.hpp"
 #include <drogon/PubSubService.h>
 
 namespace Hawk

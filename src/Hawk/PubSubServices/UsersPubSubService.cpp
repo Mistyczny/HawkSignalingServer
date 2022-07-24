@@ -2,7 +2,7 @@
 // Created by admin on 7/12/2022.
 //
 
-#include <Hawk/UsersPubSubService.hpp>
+#include "Hawk/PubSubServices/UsersPubSubService.hpp"
 #include <iostream>
 
 namespace Hawk

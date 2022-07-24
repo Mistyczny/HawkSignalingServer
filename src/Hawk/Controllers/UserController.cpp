@@ -6,13 +6,14 @@
 
 namespace Hawk
 {
-    std::shared_ptr<UserController> UserController::Create(UsersManagerPtr pUsersManager)
+    std::shared_ptr<UserController> UserController::Create(UsersManagerPtr pUsersManager, IUsersPubSubServicePtr pUsersPubSubService)
     {
-        return std::make_shared<UserController>(pUsersManager);
+        return std::make_shared<UserController>(std::move(pUsersManager), std::move(pUsersPubSubService));
     }
 
-    UserController::UserController(UsersManagerPtr pUsersManager)
+    UserController::UserController(UsersManagerPtr pUsersManager, IUsersPubSubServicePtr pUsersPubSubService)
         : m_pUsersManager{std::move(pUsersManager)}
+        , m_pUsersPubSubService{std::move(pUsersPubSubService)}
     {}
 
     void UserController::SignIn(const drogon::HttpRequestPtr& req, std::function<void(const drogon::HttpResponsePtr&)>&& callback)
@@ -23,15 +24,22 @@ namespace Hawk
         const Json::CharReaderBuilder builder;
         const std::unique_ptr<Json::CharReader> reader(builder.newCharReader());
 
-        if(!reader->parse(parameters.data(), parameters.data() + parameters.length(), &requestBody, &error)) {
+        if (!reader->parse(parameters.data(), parameters.data() + parameters.length(), &requestBody, &error))
+        {
             ReportError(std::move(callback), drogon::HttpStatusCode::k400BadRequest, error);
             return;
         }
 
         auto result = m_pUsersManager->RegisterUser(requestBody);
-        if(!result) {
+        if (!result)
+        {
             ReportError(std::move(callback), drogon::HttpStatusCode::k401Unauthorized, "Failed to register user");
             return;
+        }
+
+        if(m_pUsersPubSubService)
+        {
+            m_pUsersPubSubService->Publish("friends", "my_name");
         }
 
         Json::Value responseBody{};

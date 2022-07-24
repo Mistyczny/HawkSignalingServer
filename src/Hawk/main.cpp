@@ -1,16 +1,16 @@
+#include "Hawk/PubSubServices/UsersPubSubService.hpp"
 #include <Hawk/Controllers/SignalingController.hpp>
 #include <Hawk/Controllers/UserController.hpp>
 #include <Hawk/Controllers/UsersController.hpp>
 #include <Hawk/Controllers/UsersControllerHandlers/UsersControllerHandlersFactory.hpp>
 #include <Hawk/UsersManager.hpp>
-#include <Hawk/UsersPubSubService.hpp>
 #include <drogon/drogon.h>
 
 int main()
 {
     auto pUsersManager = Hawk::UsersManager::Create();
-    auto pUserController = Hawk::UserController::Create(pUsersManager);
     auto pUsersPubSubService = Hawk::UsersPubSubService::Create();
+    auto pUserController = Hawk::UserController::Create(pUsersManager, pUsersPubSubService);
     auto pUsersControllerHandlersFactory = Hawk::UsersControllerHandlersFactory::Create(pUsersManager, pUsersPubSubService);
     auto pUsersController = Hawk::UsersController::Create(pUsersManager, pUsersPubSubService, std::move(pUsersControllerHandlersFactory));
     auto pSignalingController = Hawk::SignalingController::Create(pUsersManager);

@@ -1,4 +1,3 @@
-
 aux_source_directory(${CMAKE_CURRENT_SOURCE_DIR}/UsersControllerHandlers USERS_CONTROLLER_SOURCES)
 add_library(UsersController
         # TODO: Check how to make it shared
@@ -29,6 +28,7 @@ add_library(UserController
 target_link_libraries(UserController
         PUBLIC
     Hawk::Net
+Hawk::UsersPubSubService
     Drogon::Drogon
 )
 target_include_directories(UserController

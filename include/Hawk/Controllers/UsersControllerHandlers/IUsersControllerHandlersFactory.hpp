@@ -2,8 +2,8 @@
 // Created by admin on 7/8/2022.
 //
 #pragma once
+#include "Hawk/PubSubServices/IUsersPubSubService.hpp"
 #include <Hawk/Controllers/UsersControllerHandlers/IUsersControllerHandler.hpp>
-#include <Hawk/IUsersPubSubService.hpp>
 #include <Hawk/Net/IWebSocketConnection.hpp>
 #include <drogon/HttpTypes.h>
 
