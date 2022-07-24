@@ -8,24 +8,4 @@ set(CMAKE_CXX_EXTENSIONS OFF)
 find_package(Drogon REQUIRED)
 find_package(jsoncpp REQUIRED)
 
-aux_source_directory(${CMAKE_SOURCE_DIR}/src/Hawk SOURCES)
-aux_source_directory(${CMAKE_SOURCE_DIR}/src/Hawk/Controllers CONTROLLERS_SOURCES)
-aux_source_directory(${CMAKE_SOURCE_DIR}/src/Hawk/Net NET_SOURCES)
-aux_source_directory(${CMAKE_SOURCE_DIR}/src/Hawk/Controllers/UsersControllerHandlers USERS_CONTROLLERS_HANDLERS_SOURCES)
-
-add_executable(HawkSignalingServer
-    ${SOURCES}
-    ${CONTROLLERS_SOURCES}
-    ${USERS_CONTROLLERS_HANDLERS_SOURCES}
-    ${NET_SOURCES}
-)
-target_link_libraries(HawkSignalingServer
-        PRIVATE
-    Drogon::Drogon
-)
-
-target_include_directories(HawkSignalingServer
-        PRIVATE
-    ${CMAKE_SOURCE_DIR}/include
-    ${CMAKE_SOURCE_DIR}/include/Hawk
-)
+add_subdirectory(src/Hawk)
