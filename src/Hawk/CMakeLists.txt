@@ -14,7 +14,6 @@ target_link_libraries(HawkSignalingServer
     Hawk::UsersController
     Hawk::SignalingController
 )
-
 target_include_directories(HawkSignalingServer
         PRIVATE
     ${CMAKE_SOURCE_DIR}/include

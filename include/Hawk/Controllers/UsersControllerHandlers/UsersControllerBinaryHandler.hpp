@@ -16,7 +16,7 @@ namespace Hawk
         UsersControllerBinaryHandler();
         ~UsersControllerBinaryHandler() override;
 
-        void HandleMessage(const Context& context) override;
+        void HandleMessage(std::string&& message) override;
     private:
 
     };

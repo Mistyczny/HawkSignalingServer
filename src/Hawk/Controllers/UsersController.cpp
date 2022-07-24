@@ -57,41 +57,30 @@ namespace Hawk
             pWebSocketConnection->Send(message);
         };
 
-        if (auto result = m_pUsersPubSubService->Subscribe("friends", subscribeCallback); !result)
-        {
-            pWebSocketConnection->Shutdown(Net::CloseCode::kAbnormally, "Failed to subscribe");
-            return;
-        }
+        pUser->subscriberId = m_pUsersPubSubService->Subscribe("friends", subscribeCallback);
     }
 
     void UsersController::handleNewMessage(const drogon::WebSocketConnectionPtr& pConnection,
                                            std::string&& message,
                                            const drogon::WebSocketMessageType& messageType)
     {
-
         auto pMessageHandler = m_pUsersControllersHandlersFactory->GetOrCreateMessageHandler(messageType);
         if (!pMessageHandler)
         {
             std::cout << "Failed to create required handler" << std::endl;
         }
 
-        IUsersControllerHandler::Context context{};
-        context.message = message;
-        pMessageHandler->HandleMessage(context);
-
-        // auto& s = pConnection->getContextRef<User>();
-        // m_usersPubSubService.publish("friends", message);
+        pMessageHandler->HandleMessage(std::move(message));
     }
 
     void UsersController::handleConnectionClosed(const drogon::WebSocketConnectionPtr& pConnection)
     {
-        std::cout << "UsersController::handleConnectionClosed" << std::endl;
         if (!pConnection->hasContext())
         {
             return;
         }
 
-        auto& s = pConnection->getContextRef<User>();
-        // m_usersPubSubService.unsubscribe("friends", s.subscriberId);
+        auto pUser = pConnection->getContext<User>();
+        m_pUsersPubSubService->Unsubscribe("friends", pUser->subscriberId);
     }
 }

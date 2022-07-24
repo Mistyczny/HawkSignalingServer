@@ -72,9 +72,6 @@ namespace Hawk
         WS_PATH_ADD("/HawkSignalingServer/Users", drogon::Get);
         WS_PATH_LIST_END
 
-    protected:
-        void ReportError();
-
     private:
         UsersManagerPtr m_pUsersManager;
         IUsersPubSubServicePtr m_pUsersPubSubService;

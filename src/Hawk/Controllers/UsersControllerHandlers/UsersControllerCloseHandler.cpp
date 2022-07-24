@@ -22,7 +22,7 @@ namespace Hawk
         std::cout << "UsersControllerCloseHandler::~UsersControllerCloseHandler" << std::endl;
     }
 
-    void UsersControllerCloseHandler::HandleMessage(const Context& context)
+    void UsersControllerCloseHandler::HandleMessage(std::string&& message)
     {
         std::cout << "UsersControllerCloseHandler::HandleMessage" << std::endl;
     }

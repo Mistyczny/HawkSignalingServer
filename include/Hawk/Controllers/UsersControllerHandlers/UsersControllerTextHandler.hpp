@@ -18,7 +18,7 @@ namespace Hawk
         UsersControllerTextHandler();
         ~UsersControllerTextHandler() override;
 
-        void HandleMessage(const Context& context) override;
+        void HandleMessage(std::string&& message) override;
     private:
 
     };

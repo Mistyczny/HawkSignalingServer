@@ -22,7 +22,7 @@ namespace Hawk
         std::cout << "UsersControllerPingHandler::~UsersControllerPingHandler" << std::endl;
     }
 
-    void UsersControllerPingHandler::HandleMessage(const Context& context)
+    void UsersControllerPingHandler::HandleMessage(std::string&& message)
     {
         std::cout << "UsersControllerPingHandler::HandleMessage" << std::endl;
     }

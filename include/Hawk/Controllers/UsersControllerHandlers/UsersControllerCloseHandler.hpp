@@ -16,7 +16,7 @@ namespace Hawk
         UsersControllerCloseHandler();
         ~UsersControllerCloseHandler() override;
 
-        void HandleMessage(const Context& context) override;
+        void HandleMessage(std::string&& message) override;
     private:
 
     };

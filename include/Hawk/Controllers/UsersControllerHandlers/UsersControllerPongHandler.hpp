@@ -18,7 +18,7 @@ namespace Hawk
         UsersControllerPongHandler();
         ~UsersControllerPongHandler() override;
 
-        void HandleMessage(const Context& context) override;
+        void HandleMessage(std::string&& message) override;
     private:
 
     };

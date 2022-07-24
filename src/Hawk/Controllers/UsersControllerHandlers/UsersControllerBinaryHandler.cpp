@@ -21,7 +21,7 @@ namespace Hawk
         std::cout << "UsersControllerBinaryHandler::~UsersControllerBinaryHandler" << std::endl;
     }
 
-    void UsersControllerBinaryHandler::HandleMessage(const Context& context)
+    void UsersControllerBinaryHandler::HandleMessage(std::string&& message)
     {
         std::cout << "UsersControllerBinaryHandler::HandleMessage" << std::endl;
     }

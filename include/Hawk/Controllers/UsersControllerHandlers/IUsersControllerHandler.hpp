@@ -11,15 +11,9 @@ namespace Hawk
     class IUsersControllerHandler
     {
     public:
-        class Context
-        {
-        public:
-            std::string message{};
-            std::string userName{};
-        };
         virtual ~IUsersControllerHandler() = default;
 
-        virtual void HandleMessage(const Context& context) = 0;
+        virtual void HandleMessage(std::string&& message) = 0;
     };
 
     using IUsersControllerHandlerPtr = std::shared_ptr<IUsersControllerHandler>;

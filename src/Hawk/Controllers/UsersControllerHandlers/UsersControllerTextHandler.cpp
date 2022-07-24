@@ -22,8 +22,10 @@ namespace Hawk
         std::cout << "UsersControllerTextHandler::~UsersControllerTextHandler" << std::endl;
     }
 
-    void UsersControllerTextHandler::HandleMessage(const Context& context)
+    void UsersControllerTextHandler::HandleMessage(std::string&& message)
     {
         std::cout << "UsersControllerTextHandler::HandleMessage" << std::endl;
+
+
     }
 }

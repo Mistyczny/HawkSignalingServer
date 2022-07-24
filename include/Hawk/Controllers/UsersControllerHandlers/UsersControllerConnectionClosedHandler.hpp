@@ -6,18 +6,18 @@
 
 namespace Hawk
 {
-    class UsersControllerConnectionClosedHandler;
-    using UsersControllerConnectionClosedHandlerPtr = std::shared_ptr<UsersControllerConnectionClosedHandler>;
-
-    class UsersControllerConnectionClosedHandler : public IUsersControllerHandler
-    {
-    public:
-        static UsersControllerConnectionClosedHandlerPtr Create();
-        UsersControllerConnectionClosedHandler();
-        ~UsersControllerConnectionClosedHandler() override;
-
-        void HandleMessage(const Context& context) override;
-    private:
-
-    };
+//    class UsersControllerConnectionClosedHandler;
+//    using UsersControllerConnectionClosedHandlerPtr = std::shared_ptr<UsersControllerConnectionClosedHandler>;
+//
+//    class UsersControllerConnectionClosedHandler
+//    {
+//    public:
+//        static UsersControllerConnectionClosedHandlerPtr Create();
+//        UsersControllerConnectionClosedHandler();
+//        ~UsersControllerConnectionClosedHandler() = default;
+//
+//        void HandleMessage(const Context& context) override;
+//    private:
+//
+//    };
 }

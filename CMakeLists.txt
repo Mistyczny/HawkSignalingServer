@@ -7,5 +7,6 @@ set(CMAKE_CXX_EXTENSIONS OFF)
 
 find_package(Drogon REQUIRED)
 find_package(jsoncpp REQUIRED)
+find_package(GTest)
 
 add_subdirectory(src/Hawk)
